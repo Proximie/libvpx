@@ -484,6 +484,21 @@ static vpx_codec_err_t vp8e_set_config(vpx_codec_alg_priv_t *ctx,
     return codec_err;
   }
 
+/* Proximie */
+    /* In case timebase has changed, update the ratio */
+    if(cfg->g_timebase.num && cfg->g_timebase.den &&
+      (cfg->g_timebase.num!=ctx->cfg.g_timebase.num || cfg->g_timebase.den!=ctx->cfg.g_timebase.den)) {
+        ctx->pts_offset_initialized = 0;
+        ctx->timestamp_ratio.den = cfg->g_timebase.den;
+        ctx->timestamp_ratio.num = (int64_t)cfg->g_timebase.num;
+        ctx->timestamp_ratio.num *= TICKS_PER_SEC;
+        reduce_ratio(&ctx->timestamp_ratio);
+        printf("PX-vp8e_set_config: changed ratio to %lld - %d \n", ctx->timestamp_ratio.num, ctx->timestamp_ratio.den);
+    } else {
+        printf("PX-vp8e_set_config: keeping old ratio %lld - %d \n", ctx->timestamp_ratio.num, ctx->timestamp_ratio.den);    
+    }
+/* End Proximie */
+
   ctx->cpi->common.error.setjmp = 1;
   ctx->cfg = *cfg;
   set_vp8e_config(&ctx->oxcf, ctx->cfg, ctx->vp8_cfg, NULL);
