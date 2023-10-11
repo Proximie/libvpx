@@ -493,9 +493,11 @@ static vpx_codec_err_t vp8e_set_config(vpx_codec_alg_priv_t *ctx,
         ctx->timestamp_ratio.num = (int64_t)cfg->g_timebase.num;
         ctx->timestamp_ratio.num *= TICKS_PER_SEC;
         reduce_ratio(&ctx->timestamp_ratio);
-        printf("PX-vp8e_set_config: changed ratio to %lld - %d \n", ctx->timestamp_ratio.num, ctx->timestamp_ratio.den);
+#if 0
+        printf("PXVPX-vp8e_set_config: changed ratio to %lld - %d \n", ctx->timestamp_ratio.num, ctx->timestamp_ratio.den);
     } else {
-        printf("PX-vp8e_set_config: keeping old ratio %lld - %d \n", ctx->timestamp_ratio.num, ctx->timestamp_ratio.den);    
+        printf("PXVPX-vp8e_set_config: keeping old ratio %lld - %d \n", ctx->timestamp_ratio.num, ctx->timestamp_ratio.den);    
+#endif
     }
 /* End Proximie */
 
@@ -822,6 +824,9 @@ static void pick_quickcompress_mode(vpx_codec_alg_priv_t *ctx,
   }
 
   if (ctx->oxcf.Mode != new_qc) {
+#if 0
+    printf("PXVPX-pick_quickcompress_mode: changed mode from %d to %d\n", ctx->oxcf.Mode, new_qc);    
+#endif
     ctx->oxcf.Mode = new_qc;
     vp8_change_config(ctx->cpi, &ctx->oxcf);
   }
