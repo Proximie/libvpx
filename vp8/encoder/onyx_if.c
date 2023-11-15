@@ -1277,7 +1277,7 @@ void vp8_new_framerate(VP8_COMP *cpi, double framerate) {
     static int px_cnt = 0;
     framerate = 24; /* Proximie uses 24 as default frame rate */
     if(px_cnt < 100) {
-      printf("PXVPX-vp8_new_framerate: framerate reset to %d\n", framerate);
+      printf("PXVPX-vp8_new_framerate: framerate reset to %d\n",(int)framerate);
       px_cnt++;
     }
   }
