@@ -1273,14 +1273,22 @@ int vp8_reverse_trans(int x) {
 void vp8_new_framerate(VP8_COMP *cpi, double framerate) {
 /* Proximie */
 #if 1
+  if (framerate < .1) framerate = 24; /* Proximie uses 24 as default frame rate */
+ #if 0 /* For testing */
   if (framerate < .1) {
     static int px_cnt = 0;
-    framerate = 24; /* Proximie uses 24 as default frame rate */
-    if(px_cnt < 100) {
-      printf("PXVPX-vp8_new_framerate: framerate reset to %d\n",(int)framerate);
-      px_cnt++;
+    if(px_cnt++ < 100) {
+      printf("PXVPX-vp8_new_framerate: framerate reset to %.1f \n",(float)framerate);
+      fflush(stdout);
+    }
+  } else if (framerate < 9) {
+    static int px_cnt = 0;
+    if(px_cnt++ < 100) {
+      printf("PXVPX-vp8_new_framerate: lower than expected framerate %.1f \n",(float)framerate);
+      fflush(stdout);
     }
   }
+ #endif  
 #else
   if (framerate < .1) framerate = 30;
 #endif
